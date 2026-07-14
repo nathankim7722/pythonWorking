@@ -1,5 +1,5 @@
 
-LOG_FILE = "workLogFolder.md"
+LOG_FILE = "pythonWorking.md"
 
 
 def loadEntries():

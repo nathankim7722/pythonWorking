@@ -26,6 +26,14 @@ def log(dateStr):
 
 """
 
+def showAll(entries):
+    if not entries:
+        print("현재 로그가 없습니다.")
+        return
+    for e in entries:
+        print(e["text"])
+        print("\n" + "-" * 30 + "\n")
+        
 
 def showByDate(entries, dateStr):
     for e in entries:
@@ -41,8 +49,6 @@ def addEntry(dateStr):
 
 
 def update(entries, dateStr):
-    dateStr = dateStr.split(":", 1)[1].strip()
-
     for e in entries:
         if e["date"] == dateStr:
             e["text"] = log(dateStr)
@@ -54,8 +60,6 @@ def update(entries, dateStr):
 
 
 def delete(entries, dateStr):
-    dateStr = dateStr.split(":", 1)[1].strip()
-
     position = None
     num = 0
 
@@ -72,3 +76,26 @@ def delete(entries, dateStr):
     print(f"{dateStr} 로그를 삭제했습니다.")
     saveEntries(entries)
 
+
+def search(entries, word):
+    wordDates = []
+    found = False
+    for e in entries:
+        if word in e["text"]:
+            found = True
+            wordDates.append(e["date"])
+            parts = e["text"].split("\n\n")
+            part1 = parts[1]
+            part2 = parts[2]
+            if word in part1 and word in part2:
+                print(f"**{e["date"]}**\n\n\n{part1}\n\n\n{part2}\n\n\n")
+
+            elif word in part1 and word not in part2:
+                print(f"**{e["date"]}**\n\n\n{part1}\n\n\n")
+            else:
+                print(f"**{e["date"]}**\n\n\n{part2}\n\n\n")
+                
+    if not found:
+        print(f"'{word}'에 대한 검색 결과가 없습니다.")
+
+    
