@@ -1,5 +1,6 @@
 
 from storage import loadEntries, saveEntries, appendEntries
+from datetime import date, timedelta
 
 def log(dateStr):
 
@@ -78,24 +79,104 @@ def delete(entries, dateStr):
 
 
 def search(entries, word):
-    wordDates = []
     found = False
     for e in entries:
         if word in e["text"]:
             found = True
-            wordDates.append(e["date"])
             parts = e["text"].split("\n\n")
             part1 = parts[1]
             part2 = parts[2]
             if word in part1 and word in part2:
                 print(f"**{e["date"]}**\n\n\n{part1}\n\n\n{part2}\n\n\n")
-
             elif word in part1 and word not in part2:
                 print(f"**{e["date"]}**\n\n\n{part1}\n\n\n")
             else:
                 print(f"**{e["date"]}**\n\n\n{part2}\n\n\n")
-                
+
     if not found:
         print(f"'{word}'에 대한 검색 결과가 없습니다.")
 
+
+def stats(entries):
+    length = len(entries)
     
+    if length==0:
+        print("작성된 로그가 없습니다.")
+    else:
+        print(f"총 업무 기록 : {length}건")
+
+    dates = [e["date"] for e in entries]
+
+    firstDate = min(dates)
+    lastDate = max(dates)
+
+    print("가장 오래된 기록: " + firstDate)
+    print("가장 최근 기록: " + lastDate)
+
+    today = date.today()
+    dayMinusSeven = today - timedelta(days=7)
+    daysWorked = 0
+
+    for e in entries:
+        entryDate = date.fromisoformat(e["date"])
+        if dayMinusSeven <= entryDate:
+            daysWorked+=1
+
+    print(f"최근 7일 기록 : {daysWorked}건")
+
+
+def mostUsed(entries):
+    topWords = {}
+
+    for e in entries:
+        parts = e["text"].split("\n\n")
+        work = parts[1].split("\n", 1)[1].strip().lstrip("- ").strip()
+        learn = parts[2].split("\n", 1)[1].strip().lstrip("- ").strip()
+
+        workAndLearn = work + " " + learn
+        words = workAndLearn.replace("\n", " ").split(" ")
+        for word in words:
+            word = word.strip()
+            if not word:
+                continue
+            topWords[word] = topWords.get(word, 0) + 1
+
+    sortedWords = sorted(topWords.items(), key=lambda num: num[1])
+    top5 = sortedWords[-5:]
+    top5 = top5[::-1]
+
+    print("\n자주 등장한 단어: ")
+    for word, count in top5:
+        print(f"{word} ({count}번)")
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

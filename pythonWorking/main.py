@@ -29,6 +29,12 @@ def main():
     
     elif command == "search":
         commands.search(loadEntries(), sys.argv[2])
+    
+    elif command == "stats":
+        commands.stats(loadEntries())
+
+    elif command == "mostUsed":
+        commands.mostUsed(loadEntries())
 
     else:
         commands.addEntry(str(date.today()))
