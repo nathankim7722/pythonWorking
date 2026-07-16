@@ -1,5 +1,5 @@
 
-from storage import loadEntries, saveEntries, appendEntries
+from storage import loadEntries, saveEntries, appendEntries, saveJson
 from datetime import date, timedelta
 
 def log(dateStr):
@@ -83,15 +83,7 @@ def search(entries, word):
     for e in entries:
         if word in e["text"]:
             found = True
-            parts = e["text"].split("\n\n")
-            part1 = parts[1]
-            part2 = parts[2]
-            if word in part1 and word in part2:
-                print(f"**{e["date"]}**\n\n\n{part1}\n\n\n{part2}\n\n\n")
-            elif word in part1 and word not in part2:
-                print(f"**{e["date"]}**\n\n\n{part1}\n\n\n")
-            else:
-                print(f"**{e["date"]}**\n\n\n{part2}\n\n\n")
+            print(f"\n\n\n{e["text"]}\n\n\n")
 
     if not found:
         print(f"'{word}'에 대한 검색 결과가 없습니다.")
@@ -124,8 +116,6 @@ def stats(entries):
 
     print(f"최근 7일 기록 : {daysWorked}건")
 
-
-def mostUsed(entries):
     topWords = {}
 
     for e in entries:
@@ -150,8 +140,9 @@ def mostUsed(entries):
         print(f"{word} ({count}번)")
 
 
-
-
+def export(entries):
+    saveJson(entries)
+    print("pythonWorking.json를 Export했습니다.")
 
 
 

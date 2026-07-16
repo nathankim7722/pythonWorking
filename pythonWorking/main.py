@@ -33,8 +33,8 @@ def main():
     elif command == "stats":
         commands.stats(loadEntries())
 
-    elif command == "mostUsed":
-        commands.mostUsed(loadEntries())
+    elif command == "export":
+        commands.export(loadEntries())
 
     else:
         commands.addEntry(str(date.today()))
