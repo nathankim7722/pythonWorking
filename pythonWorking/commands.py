@@ -1,6 +1,10 @@
 
-from storage import loadEntries, saveEntries, appendEntries, saveJson
+import sys
+import re
 from datetime import date, timedelta
+
+from storage import loadEntries, saveEntries, appendEntries, saveJson
+
 
 def log(dateStr):
 
@@ -145,12 +149,35 @@ def export(entries):
     print("pythonWorking.json를 Export했습니다.")
 
 
+def usage():
+    print("""지원하지 않는 명령어 입니다
+사용법:
+    python main.py add/new/create
+    python main.py list
+    python main.py today
+    python main.py date YYYY-MM-DD""")
 
-        
+
+def commandCheck(argv):
+    if len(argv) <= 1:
+        usage()
+        return None
+    return True
 
 
+def dateCheck(command, argv):
+    if len(argv) <= 2 or not re.match(r"^\d{4}-\d{2}-\d{2}$", argv[2]):
+        print(f"잘못된 사용법입니다. 예: python main.py {command} 2000-00-00")
+        return None
 
+    return argv[2]
 
+def searchCheck(command, argv):
+    if len(argv) <= 2:
+        print(f"잘못된 사용법입니다. 예: python main.py {command} coding")
+        return None
+
+    return argv[2]
 
 
 
