@@ -28,6 +28,7 @@ def log(dateStr):
 
 """
 
+
 def showAll(entries):
     if not entries:
         print("현재 로그가 없습니다.")
@@ -45,11 +46,9 @@ def showByDate(entries, dateStr):
     print(dateStr + " 에 작성된 로그가 없습니다.")
 
 
-
 def addEntry(dateStr):
     entry = log(dateStr)
     appendEntries(entry)
-
 
 
 def update(entries, dateStr):

@@ -3,6 +3,7 @@ import json
 
 
 LOG_FILE = "pythonWorking.md"
+EXPORT_FILE = "pythonWorking.json"
 
 
 def loadEntries():
@@ -37,7 +38,6 @@ def appendEntries(entries):
         file.write(entries)
 
 
-EXPORT_FILE = "pythonWorking.json"
 
 def saveJson(data):
     with open(EXPORT_FILE, "w", encoding="utf-8") as file:

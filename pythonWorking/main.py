@@ -36,10 +36,10 @@ def dateCheck(command, argv):
         return 
     daysInMonth = [0,31,28,31,30,31,30,31,31,30,31,30,31]
     year = int(argv[2][0:4])
-    if year%4 == 0:
-        daysInMonth[2] = 29
     month = int(argv[2][5:7])
     day = int(argv[2][-2:])
+    if year%4 == 0:
+        daysInMonth[2] = 29
     if day > daysInMonth[month]:
         print(f"""\n\n가능하지 않은 날짜입니다.\n\n""")
         return 
@@ -58,10 +58,9 @@ def searchCheck(argv):
     return argv[2]
 
 
-def addCheck(entries, dateStr):
+def has_entry(entries, dateStr):
     for e in entries:
         if e["date"] == dateStr:
-            print(f"""\n\n오늘({dateStr})의 로그를 이미 작성했습니다, 변경을 위해 업데이트 커맨드를 사용해 주세요.
 예: python main.py update YYYY-MM-DD\n\n""")
             return True
     return False
@@ -76,9 +75,12 @@ def main():
     match command:
         
         case "add" | "new" | "create":
-            ac = addCheck(loadEntries(), str(date.today()))
+            ac = has_entry(loadEntries(), str(date.today()))
             if ac == False:
                 commands.addEntry(str(date.today()))
+            else:
+                print(f"""\n\n오늘({str(date.today())})의 로그를 이미 작성했습니다, 변경을 위해 업데이트 커맨드를 사용해 주세요.
+예: python main.py update YYYY-MM-DD\n\n""")
 
         case "list":
             commands.showAll(loadEntries())

@@ -14,7 +14,6 @@ from storage import loadEntries, saveEntries, appendEntries, saveJson
 class TestStringMethods(unittest.TestCase):
 
     def test_valid_same_date(self):
-
         entries = [
             {
                 "date":"2026-07-20",
@@ -25,26 +24,24 @@ class TestStringMethods(unittest.TestCase):
                 "text":"GitHub"
             }
         ]
-
-        result = main.addCheck(entries, "2026-07-22")
+        result = main.has_entry(entries, "2026-07-22")
         self.assertTrue(result)
+
 
     def test_valid_date_format(self):
         result = main.dateCheck("date", ["main.py", "date", "2026-07-20"])
         self.assertEqual(result, "2026-07-20")
 
+
     def test_valid_separator(self):
         result = main.dateCheck ("date", ["main.py", "date", "2026/07/20"])
         self.assertIsNone(result)
 
-    def test_valid_date_feburary(self):
-        result = main.dateCheck ("date", ["main.py", "date", "2024-02-29"])
-        self.assertEqual(result, "2024-02-29")
 
     def test_valid_date_calander(self):
-        result = main.dateCheck ("date", ["main.py", "date", "2026-09-09"])
-        self.assertEqual(result, "2026-09-09")
-        #error 나오는게 맞음
+        result = main.dateCheck ("date", ["main.py", "date", "2020-02-29"])
+        self.assertEqual(result, "2020-02-29")
+
 
     def test_search_query(self):
 
