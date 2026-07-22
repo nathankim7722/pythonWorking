@@ -4,7 +4,7 @@
 import sys
 import re
 from datetime import date
-from storage import loadEntries
+from storage import loadEntries, saveEntries, appendEntries, saveJson
 import commands
 
 
@@ -34,6 +34,18 @@ def dateCheck(command, argv):
 사용법:
   python working.py {command} YYYY-MM-DD\n\n""")
         return 
+    daysInMonth = [0,31,28,31,30,31,30,31,31,30,31,30,31]
+    year = int(argv[2][0:4])
+    if year%4 == 0:
+        daysInMonth[2] = 29
+    month = int(argv[2][5:7])
+    day = int(argv[2][-2:])
+    if day > daysInMonth[month]:
+        print(f"""\n\n가능하지 않은 날짜입니다.\n\n""")
+        return 
+    if month > 12:
+        print(f"""\n\n가능하지 않은 날짜입니다.\n\n""")
+        return 
     return argv[2]
 
 
@@ -46,6 +58,15 @@ def searchCheck(argv):
     return argv[2]
 
 
+def addCheck(entries, dateStr):
+    for e in entries:
+        if e["date"] == dateStr:
+            print(f"""\n\n오늘({dateStr})의 로그를 이미 작성했습니다, 변경을 위해 업데이트 커맨드를 사용해 주세요.
+예: python main.py update YYYY-MM-DD\n\n""")
+            return True
+    return False
+
+
 def main():
     if not commandCheck(sys.argv):
         return
@@ -55,7 +76,9 @@ def main():
     match command:
         
         case "add" | "new" | "create":
-            commands.addEntry(str(date.today()))
+            ac = addCheck(loadEntries(), str(date.today()))
+            if ac == False:
+                commands.addEntry(str(date.today()))
 
         case "list":
             commands.showAll(loadEntries())
