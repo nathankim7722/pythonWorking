@@ -61,7 +61,6 @@ def searchCheck(argv):
 def has_entry(entries, dateStr):
     for e in entries:
         if e["date"] == dateStr:
-예: python main.py update YYYY-MM-DD\n\n""")
             return True
     return False
 
