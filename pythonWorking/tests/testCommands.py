@@ -1,6 +1,10 @@
 
-#cd "C:\Users\jaese\Desktop\programming folder\python\pythonWorking\tests"
-#python -m unittest tests.test_commands -v
+
+# cd "C:\Users\jaese\Desktop\programming folder\python\pythonWorking\tests"
+"""
+cd python\pythonWorking
+python -m unittest tests.testCommands -v
+"""
 
 import unittest
 import sys
@@ -8,12 +12,12 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import main
 import commands
-from storage import loadEntries, saveEntries, appendEntries, saveJson
+from storage import load_entries, save_entries, append_entries, save_json
 
 
 class TestStringMethods(unittest.TestCase):
 
-    def test_valid_same_date(self):
+    def test_has_entry(self):
         entries = [
             {
                 "date":"2026-07-20",
@@ -28,19 +32,19 @@ class TestStringMethods(unittest.TestCase):
         self.assertTrue(result)
 
 
-    def test_valid_date_format(self):
-        result = main.dateCheck("date", ["main.py", "date", "2026-07-20"])
-        self.assertEqual(result, "2026-07-20")
+    def test_has_date(self):
+        result = main.has_date("date", ["main.py", "date", "2026-07-20"])
+        self.assertTrue(result)
 
 
-    def test_valid_separator(self):
-        result = main.dateCheck ("date", ["main.py", "date", "2026/07/20"])
-        self.assertIsNone(result)
+    def test_date_format_check(self):
+        result = main.date_format_check("date", ["main.py", "date", "2026/07/20"])
+        self.assertFalse(result)
 
 
-    def test_valid_date_calander(self):
-        result = main.dateCheck ("date", ["main.py", "date", "2020-02-29"])
-        self.assertEqual(result, "2020-02-29")
+    def test_date_exist_check(self):
+        result = main.date_exist_check("date", ["main.py", "date", "2020-02-29"])
+        self.assertEqual(result,None)
 
 
     def test_search_query(self):
@@ -56,11 +60,10 @@ class TestStringMethods(unittest.TestCase):
             }
         ]
 
-        result = commands.search(entries,"python")
+        result = commands.search(entries, "python")
 
-        self.assertEqual(len(result),1)
+        self.assertEqual(len(result), 1)
 
 
 if __name__ == '__main__':
     unittest.main()
-

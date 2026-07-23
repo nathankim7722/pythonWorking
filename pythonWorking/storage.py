@@ -1,48 +1,50 @@
 
+
+from config import LOG_FILE, EXPORT_FILE, DATE_FORMAT, JSON_INDENT, LINE_INDENT
 import json
 
 
-LOG_FILE = "pythonWorking.md"
-EXPORT_FILE = "pythonWorking.json"
-
-
-def loadEntries():
+def load_entries():
     entries = []
+
     try:
-        with open(LOG_FILE, "r", encoding="utf-8") as f:
-            content = f.read()
+        with open(LOG_FILE, "r", encoding="utf-8") as file:
+            content = file.read()
     except FileNotFoundError:
         return entries
 
-    rawEntries = content.strip().split("\n\n\n")
-    for raw in rawEntries:
+    raw_entries = content.strip().split(LINE_INDENT)
+
+    for raw in raw_entries:
         raw = raw.strip()
+
         if not raw:
             continue
+
         first_line = raw.split("\n")[0]
         date_str = first_line.replace("*", "").strip()
         entries.append({"date": date_str, "text": raw})
+
     return entries
 
 
-def saveEntries(entries):
- with open(LOG_FILE, "w", encoding="utf-8") as file:
-    if entries:
-        file.write("\n\n\n".join(e["text"] for e in entries) + "\n\n\n")
-    else:
-        file.write("")
+def save_entries(entries):
+    with open(LOG_FILE, "w", encoding="utf-8") as file:
+        if entries:
+            file.write(
+                LINE_INDENT.join(entry["text"] for entry in entries)
+                + LINE_INDENT
+            )
+        else:
+            file.write("")
 
 
-def appendEntries(entries):
+def append_entries(entry):
     with open(LOG_FILE, "a", encoding="utf-8") as file:
-        file.write(entries)
+        file.write(entry)
 
 
-
-def saveJson(data):
+def save_json(data):
     with open(EXPORT_FILE, "w", encoding="utf-8") as file:
-        json.dump(data, file, ensure_ascii=False, indent=2)
-
-
-
+        json.dump(data, file, ensure_ascii=False, indent=JSON_INDENT)
 
